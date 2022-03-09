@@ -1,13 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
-import socket
+#import socket
 from urllib.request import Request, urlopen
 import time
 
 import random
 import string
-import sys
-import threading
+#import sys
+#import threading
 
 
 def generate_random_string(length):
@@ -18,38 +18,42 @@ def generate_random_string(length):
 
 def request():
     count = 0
-    for j in range(5,7+1,1):
-        for i in range(0,1000,1):
-            url0 = 'http://prnt.sc/'+generate_random_string(j)
-            time.sleep(1)
-            res = requests.get(url0, headers={'User-Agent': 'Chrome'+generate_random_string(2)})
-            if(res):
-                soup = BeautifulSoup(res.text, 'lxml')
-                if(soup.find('img', class_='no-click screenshot-image')):
-                    src = soup.find('img', class_='no-click screenshot-image').get('src')
-                    image_id = soup.find('img', class_='no-click screenshot-image').get('image-id')
-                    if(not (src[2: 16]=='st.prntscr.com')):
-                        """
-                        response = requests.get(src, stream=True)
-                        out = open("img/img_"+image_id+".png",'wb')
-                        out.write(response.content)
-                        out.close()
-                        """
-                        time.sleep(1)
-                        try:
-                            req = Request(src,headers={'User-Agent': 'Chrome'+generate_random_string(2)})
-                            webpage = urlopen(req)
-                            if(webpage):
-                                count += 1
-                                print('OK '+str(count))
-                                content = webpage.read()
-                                out = open("img/img_"+image_id+".png", "wb")
-                                out.write(content)
-                                out.close
-                            else:
+    for k in range(0,10,1):    
+        for j in range(5,7+1,1):
+            for i in range(0,1000,1):
+                url0 = 'http://prnt.sc/'+generate_random_string(j)
+                time.sleep(0.5)
+                res = requests.get(url0, headers={'User-Agent': 'Chrome'+generate_random_string(2)})
+                if(res):
+                    soup = BeautifulSoup(res.text, 'lxml')
+                    if(soup.find('img', class_='no-click screenshot-image')):
+                        src = soup.find('img', class_='no-click screenshot-image').get('src')
+                        image_id = soup.find('img', class_='no-click screenshot-image').get('image-id')
+                        if(not (src[2: 16]=='st.prntscr.com')):
+                            """
+                            response = requests.get(src, stream=True)
+                            out = open("img/img_"+image_id+".png",'wb')
+                            out.write(response.content)
+                            out.close()
+                            """
+                            time.sleep(0.5)
+                            try:
+                                req = Request(src,headers={'User-Agent': 'Chrome'+generate_random_string(2)})
+                                webpage = urlopen(req)
+                                if(webpage):
+                                    count += 1
+                                    print('OK '+str(count))
+                                    content = webpage.read()
+                                    out = open("img/img_"+image_id+".png", "wb")
+                                    out.write(content)
+                                    out.close()
+                                else:
+                                    count += 1
+                                    print('Failed '+str(count))
+                            except:
                                 count += 1
                                 print('Failed '+str(count))
-                        except:
+                        else:
                             count += 1
                             print('Failed '+str(count))
                     else:
@@ -58,9 +62,6 @@ def request():
                 else:
                     count += 1
                     print('Failed '+str(count))
-            else:
-                count += 1
-                print('Failed '+str(count))
 
 if __name__ == '__main__':
     #sys.setrecursionlimit(1000000)
